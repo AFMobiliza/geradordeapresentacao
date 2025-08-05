@@ -140,38 +140,16 @@
                     prev.includes(id) ? prev.filter(odsId => odsId !== id) : [...prev, id]
                 );
             };
-
-            const generateImagesForSlides = async (slidesWithPrompts) => {
-                for (let i = 0; i < slidesWithPrompts.length; i++) {
-                    const slide = slidesWithPrompts[i];
-                    if (slide.image_prompt) {
-                        try {
-                            const imagePayload = { instances: [{ prompt: slide.image_prompt }], parameters: { "sampleCount": 1 } };
-                            const apiKey = "";
-                            const imageUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
-                            const imageResponse = await fetch(imageUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(imagePayload) });
-                            if (!imageResponse.ok) continue;
-                            
-                            const imageResult = await imageResponse.json();
-                            const base64ImageData = imageResult.predictions[0]?.bytesBase64Encoded;
-
-                            if (base64ImageData) {
-                                setSlides(prevSlides => {
-                                    const newSlides = [...prevSlides];
-                                    if(newSlides[i]) newSlides[i].imageData = `data:image/png;base64,${base64ImageData}`;
-                                    return newSlides;
-                                });
-                            }
-                        } catch (error) {
-                            console.error(`Erro ao gerar imagem para o slide ${i + 1}:`, error);
-                        }
-                    }
-                }
-            };
             
-            const callGeminiAPI = async (prompt, isJson = false) => {
+            const callGeminiAPI = async (prompt, isJson = false, includeLogo = false) => {
                 let promptParts = [{ text: prompt }];
                 
+                if (includeLogo && logo) {
+                    const mimeType = logo.type;
+                    const base64Data = logo.data.substring(logo.data.indexOf(",") + 1);
+                    promptParts.push({ inlineData: { mimeType: mimeType, data: base64Data } });
+                }
+
                 const payload = {
                     contents: [{ role: "user", parts: promptParts }],
                 };
@@ -202,8 +180,35 @@
                 
                 return text;
             };
+            
+            const generateImagesForSlides = async (slidesWithPrompts) => {
+                for (let i = 0; i < slidesWithPrompts.length; i++) {
+                    const slide = slidesWithPrompts[i];
+                    if (slide.image_prompt) {
+                        try {
+                            const imagePayload = { instances: [{ prompt: slide.image_prompt }], parameters: { "sampleCount": 1 } };
+                            const apiKey = "";
+                            const imageUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+                            const imageResponse = await fetch(imageUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(imagePayload) });
+                            if (!imageResponse.ok) continue;
+                            
+                            const imageResult = await imageResponse.json();
+                            const base64ImageData = imageResult.predictions[0]?.bytesBase64Encoded;
 
-
+                            if (base64ImageData) {
+                                setSlides(prevSlides => {
+                                    const newSlides = [...prevSlides];
+                                    if(newSlides[i]) newSlides[i].imageData = `data:image/png;base64,${base64ImageData}`;
+                                    return newSlides;
+                                });
+                            }
+                        } catch (error) {
+                            console.error(`Erro ao gerar imagem para o slide ${i + 1}:`, error);
+                        }
+                    }
+                }
+            };
+            
             const generatePreview = async () => {
                 setIsLoading(true);
                 setErrorMessage('');
@@ -217,40 +222,37 @@
                 }
 
                 try {
-                    let basePrompt = `Você é um especialista em criar propostas comerciais para ONGs. Sua tarefa é transformar o texto de um projeto em uma apresentação estratégica e persuasiva. **Seja conciso e direto. Use frases curtas e bullet points.**`;
+                    let basePrompt = `**PERSONA:** Você é um consultor de negócios sênior, especialista em propostas de alto impacto. Seu objetivo é criar uma apresentação que seja direta, profissional e focada em resultados (redução de custos ou geração de riqueza). Evite linguagem floreada, jargões excessivos e qualquer conteúdo que não agregue valor direto à proposta. Priorize a concisão absoluta. Ninguém tem tempo a perder.`;
                     
-                    if (logo || themeDescription) {
-                        basePrompt += `\n\nAnalise a identidade visual.`;
-                        if (themeDescription) basePrompt += ` O usuário descreveu o estilo como: "${themeDescription}".`;
-                        if (logo) basePrompt += ` A logomarca também foi fornecida para referência de cores.`;
-                        basePrompt += ` Baseado nisso, sugira um tema de design.`;
-                    }
+                    basePrompt += `\n\n**TAREFA:** Converta o texto do projeto em uma apresentação em JSON. O tema de design deve usar cores sólidas e corporativas, transmitindo seriedade.`;
+                    if (themeDescription) basePrompt += ` O usuário descreveu o estilo como: "${themeDescription}".`;
+                    if (logo) basePrompt += ` A logomarca também foi fornecida para referência de cores.`;
                     
-                    basePrompt += `\n\nSua resposta deve ser um objeto JSON. A estrutura deve ser: { "theme": { "primaryColor": "#XXXXXX", "textColor": "#XXXXXX", "backgroundColor": "#XXXXXX" }, "slides": [ { "title": "...", "content": "...", "image_prompt": "...", "notes": "..." } ] }. O campo "notes" deve conter sugestões de roteiro para o apresentador em bullet points.`;
+                    basePrompt += `\n\n**FORMATO JSON OBRIGATÓRIO:**\n{ "theme": { "primaryColor": "#XXXXXX", "textColor": "#XXXXXX", "backgroundColor": "#XXXXXX" }, "slides": [ { "title": "...", "content": "...", "image_prompt": "...", "notes": "..." } ] }`;
                     
                     let imagePromptInstruction = (includeAiImages && userImages.length === 0)
-                        ? `Para cada slide, inclua um campo "image_prompt" no JSON com uma descrição em inglês para uma IA gerar uma imagem simbólica e limpa (estilo: 'digital art, clean, minimalist').`
+                        ? `Para cada slide, inclua um campo "image_prompt" com uma descrição em inglês para gerar um **infográfico, ícone ou ilustração vetorial** que represente o conceito do slide. Estilo: 'infographic, vector, clean, corporate, solid colors'.`
                         : '';
 
                     let slideCounter = 5;
-                    let optionalSlidesPrompt = `\n\n${imagePromptInstruction}\n\n**Estrutura da Apresentação:**\n1. Capa\n2. O Problema\n3. A Solução\n4. Diferenciais\n5. Impacto Esperado`;
+                    let optionalSlidesPrompt = `\n\n${imagePromptInstruction}\n\n**ESTRUTURA DA APRESENTAÇÃO (SEJA DIRETO):**\n1. **Capa:** Título do projeto e subtítulo curto.\n2. **O Problema:** Descreva o problema de forma quantitativa, se possível. Qual a dor do mercado?\n3. **A Solução:** Apresente a solução de forma clara, focando em características, benefícios e vantagens comerciais.\n4. **Diferenciais:** O que torna esta solução única? Use bullet points.\n5. **Impacto/Resultados:** Apresente o impacto esperado em números, como ROI, economia, etc.`;
                     
                     if (selectedODS.length > 0) {
                         slideCounter++;
                         const selectedODSNames = selectedODS.map(id => odsData.find(ods => ods.id === id).name).join(', ');
-                        optionalSlidesPrompt += `\n${slideCounter}. **Alinhamento com os ODS:** Crie um slide com este título, explicando como o projeto se alinha com: ${selectedODSNames}.`;
+                        optionalSlidesPrompt += `\n${slideCounter}. **Alinhamento ODS:** Explique objetivamente como o projeto se alinha com: ${selectedODSNames}.`;
                     }
                     if (sponsorInfo.trim()) {
                         slideCounter++;
-                        optionalSlidesPrompt += `\n${slideCounter}. **Alinhamento Estratégico:** Crie um slide com este título, conectando o projeto aos valores da empresa patrocinadora.`;
+                        optionalSlidesPrompt += `\n${slideCounter}. **Alinhamento Estratégico:** Conecte o projeto aos valores/metas da empresa patrocinadora.`;
                     }
-                    if (includeImageCounterparts) { slideCounter++; optionalSlidesPrompt += `\n${slideCounter}. Contrapartidas de Visibilidade`; }
-                    if (includeSocialCounterparts) { slideCounter++; optionalSlidesPrompt += `\n${slideCounter}. Valor para a Marca (ESG)`; }
-                    if (includeInvestmentPlan) { slideCounter++; optionalSlidesPrompt += `\n${slideCounter}. Plano de Investimento`; }
+                    if (includeImageCounterparts) { slideCounter++; optionalSlidesPrompt += `\n${slideCounter}. **Contrapartidas de Visibilidade:** Liste os benefícios de marca para o patrocinador.`; }
+                    if (includeSocialCounterparts) { slideCounter++; optionalSlidesPrompt += `\n${slideCounter}. **Valor para a Marca (ESG):** Detalhe o impacto social e de governança.`; }
+                    if (includeInvestmentPlan) { slideCounter++; optionalSlidesPrompt += `\n${slideCounter}. **Plano de Investimento:** Detalhe os custos e o retorno esperado.`; }
                     
                     let contactInfoPrompt = '';
                     if (phone || email || website || socialMedia) {
-                        contactInfoPrompt += '\n\n**Informações de Contato da ONG para incluir no último slide (use emojis como ícones):**';
+                        contactInfoPrompt += '\n\n**Informações de Contato (incluir no último slide):**';
                         if (phone) contactInfoPrompt += `\n- 📞 Telefone: ${phone}`;
                         if (email) contactInfoPrompt += `\n- 📧 E-mail: ${email}`;
                         if (website) contactInfoPrompt += `\n- 🌐 Site: ${website}`;
@@ -258,47 +260,15 @@
                     }
                     
                     slideCounter++;
-                    const finalPromptPart = `\n${slideCounter}. **Chamada para Ação:** Título 'Junte-se a Nós'. O conteúdo deve ser um convite para parceria e incluir as informações de contato se fornecidas.\n${contactInfoPrompt}\n\n**Informações do Projeto:**\n\`\`\`${projectText}\`\`\`\n\n**Informações do Patrocinador para personalização:**\n\`\`\`${sponsorInfo}\`\`\``;
+                    const finalPromptPart = `\n${slideCounter}. **Próximos Passos:** Um call-to-action claro e direto, incluindo as informações de contato se fornecidas.\n${contactInfoPrompt}\n\n**TEXTO BASE DO PROJETO:**\n\`\`\`${projectText}\`\`\`\n\n**INFORMAÇÕES DO PATROCINADOR:**\n\`\`\`${sponsorInfo}\`\`\``;
                     
-                    let fullPrompt = basePrompt + optionalSlidesPrompt + finalPromptPart;
+                    const fullPrompt = basePrompt + optionalSlidesPrompt + finalPromptPart;
 
-                    let promptParts = [{ text: fullPrompt }];
-                    if (logo) {
-                        const mimeType = logo.type;
-                        const base64Data = logo.data.substring(logo.data.indexOf(",") + 1);
-                        promptParts.push({ inlineData: { mimeType: mimeType, data: base64Data } });
-                    }
-                    
-                    const payload = {
-                        contents: [{ role: "user", parts: promptParts }],
-                        generationConfig: {
-                            responseMimeType: "application/json",
-                            responseSchema: {
-                                type: "OBJECT",
-                                properties: {
-                                    "theme": { type: "OBJECT", properties: { "primaryColor": { "type": "STRING" }, "textColor": { "type": "STRING" }, "backgroundColor": { "type": "STRING" } }, required: ["primaryColor", "textColor", "backgroundColor"] },
-                                    "slides": { type: "ARRAY", items: { type: "OBJECT", properties: { "title": { "type": "STRING" }, "content": { "type": "STRING" }, "image_prompt": { "type": "STRING" }, "notes": {"type": "STRING"} }, required: ["title", "content"] } }
-                                },
-                                required: ["theme", "slides"]
-                            }
-                        }
-                    };
-
-                    const apiKey = "";
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                    if (!response.ok) throw new Error(`Erro na API de texto: ${response.statusText}`);
-                    
-                    const result = await response.json();
-                    const jsonText = result.candidates[0]?.content?.parts?.[0]?.text;
-                    if (!jsonText) throw new Error('A resposta da IA não contém dados JSON válidos.');
-
+                    const jsonText = await callGeminiAPI(fullPrompt, true, true);
                     const presentationData = JSON.parse(jsonText);
                     
                     if (!presentationData || !Array.isArray(presentationData.slides)) {
-                        console.error("Resposta da IA inválida. 'slides' não é um array:", jsonText);
-                        throw new Error('A IA retornou um formato de dados inesperado. Tente novamente.');
+                        throw new Error('A IA retornou um formato de dados inesperado.');
                     }
                     
                     if (userImages.length > 0) {
@@ -328,13 +298,13 @@
                 setRefiningState(prev => ({ ...prev, [index]: tone }));
                 try {
                     const slide = slides[index];
-                    const prompt = `Reescreva o seguinte conteúdo de slide para ter um tom mais **${tone}**. Retorne apenas o texto reescrito, sem o título ou formatação adicional.\n\nConteúdo original:\n"${slide.content}"`;
+                    const prompt = `Reescreva o seguinte conteúdo de slide para ter um tom mais **${tone}** e focado em negócios. Retorne apenas o texto reescrito, sem o título ou formatação adicional.\n\nConteúdo original:\n"${slide.content}"`;
                     const newContent = await callGeminiAPI(prompt);
-                    handleSlideChange(index, 'content', newContent);
+                    handleSlideChange(index, 'content', newContent.trim());
                 } catch (error) {
                     setErrorMessage(`Erro ao refinar: ${error.message}`);
                 } finally {
-                    setRefiningState(prev => ({ ...prev, [index]: false }));
+                    setRefiningState(prev => { const newState = {...prev}; delete newState[index]; return newState; });
                 }
             };
 
@@ -344,11 +314,12 @@
                     const slide = slides[index];
                     const prompt = `Crie notas de apresentador (em português) para um slide com o título "${slide.title}" e conteúdo "${slide.content}". As notas devem ser curtas, em bullet points, e fornecer dicas e contexto para o apresentador. Retorne apenas as notas.`;
                     const newNotes = await callGeminiAPI(prompt);
-                    handleSlideChange(index, 'notes', newNotes);
-                } catch (error) {
+                    handleSlideChange(index, 'notes', newNotes.trim());
+                } catch (error)
+                 {
                     setErrorMessage(`Erro ao gerar notas: ${error.message}`);
                 } finally {
-                    setRefiningState(prev => ({ ...prev, [`notes-${index}`]: false }));
+                    setRefiningState(prev => { const newState = {...prev}; delete newState[`notes-${index}`]; return newState; });
                 }
             };
 
@@ -592,10 +563,10 @@
                                     <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg text-left">
                                         <h4 className="font-bold text-blue-800">Dicas para o Melhor Resultado:</h4>
                                         <ul className="list-disc list-inside mt-2 text-sm text-blue-700 space-y-1">
-                                            <li>Todo o texto e as imagens gerados pela IA são <strong>sugestões</strong>. Edite-os na prévia para que fiquem perfeitos para o seu projeto.</li>
-                                            <li>Para as fotos do projeto, recomendamos o envio de até <strong>10 imagens</strong> para um melhor resultado visual.</li>
-                                            <li>Use uma logomarca com <strong>fundo transparente</strong> (.PNG). Se precisar, remova o fundo em sites como o <a href="https://www.remove.bg/pt-br" target="_blank" rel="noopener noreferrer" className="underline font-semibold">remove.bg</a>.</li>
-                                            <li>O arquivo <strong>PPTX é um ponto de partida</strong>. Pode ser necessário fazer pequenos ajustes de layout diretamente no seu editor de apresentações preferido.</li>
+                                            <li><strong>Conteúdo é Sugestão:</strong> Todo o texto e as imagens gerados pela IA são um ponto de partida. Edite-os na prévia para que fiquem perfeitos para o seu projeto.</li>
+                                            <li><strong>Logomarca Ideal:</strong> Use uma logomarca com <strong>fundo transparente (.PNG)</strong>. Se precisar, remova o fundo facilmente em sites como o <a href="https://www.remove.bg/pt-br" target="_blank" rel="noopener noreferrer" className="underline font-semibold">remove.bg</a>.</li>
+                                            <li><strong>Fotos do Projeto:</strong> Para um melhor resultado visual, recomendamos o envio de até <strong>10 fotos em alta resolução</strong>.</li>
+                                            <li><strong>Ajuste Final:</strong> Este sistema facilita a criação, mas não é um especialista em design. O arquivo <strong>PPTX é um ponto de partida</strong> e pode precisar de pequenos ajustes de layout no seu editor de apresentações.</li>
                                         </ul>
                                     </div>
 
