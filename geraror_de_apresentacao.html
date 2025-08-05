@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Genie Presentations - Gerador de Apresentações com IA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Carrega o Tailwind CSS para estilização -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,7 +22,7 @@
 
     <style>
         /* Adiciona uma fonte mais agradável para a aplicação */
-        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -295,11 +294,15 @@
                     const newSlide = pptx.addSlide();
                     newSlide.background = { color: THEME.background };
                     
+                    // CORREÇÃO: Ajuste no posicionamento e dimensionamento da logomarca
                     if (logo && index !== 0) {
                         newSlide.addImage({
                             data: logo.data,
-                            x: 9.0, y: 0.15, h: 0.4,
-                            sizing: { type: 'contain', w: 0.8, h: 0.4 }
+                            x: 9.0,      // Posição X (canto direito)
+                            y: 0.15,     // Posição Y (topo)
+                            w: 0.8,      // Largura máxima da caixa da logo
+                            h: 0.4,      // Altura máxima da caixa da logo
+                            sizing: { type: 'contain' } // 'contain' ajusta a imagem para caber na caixa mantendo a proporção
                         });
                     }
 
@@ -498,12 +501,9 @@
                         ) : (
                             <div className="flex items-center justify-center h-full">
                                 <div className="text-center max-w-2xl mx-auto">
-                                   <div className="mb-6">
-                                        <p className="text-sm text-gray-500 mb-2">Desenvolvido por:</p>
-                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaUAAAGjCAYAAAD86CKbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGAAAP+lSURBVHhepP1p31zZdt/7t/tWq1arV6tWq1arVqvV6tX3t/f29t7b23t/f+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v-7+/v7+/v7+/v-7+/v7+/v7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-7+/v-lovin" />
-                                    <div className="mb-4 mt-6"><span className-="inline-glock bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full">Powered by Gemini AI</span></div>
-                                    <h2 className="text-3xl lg:text-5xl font-extrabold text-gray-900 leading-tight">Transforme seu <span className="text-indigo-600">Projeto</span> em uma <span className-text-indigo-600">Apresentação de Impacto</span></h2>
-                                    <p className="mt-6 text-base lg:text-lg text-gray-600">A prévia editável da sua apresentação aparecerá aqui assim que for gerada.</p>-
+                                    <div className="mb-4 mt-6"><span className="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full">Powered by Gemini AI</span></div>
+                                    <h2 className="text-3xl lg:text-5xl font-extrabold text-gray-900 leading-tight">Transforme seu <span className="text-indigo-600">Projeto</span> em uma <span className="text-indigo-600">Apresentação de Impacto</span></h2>
+                                    <p className="mt-6 text-base lg:text-lg text-gray-600">A prévia editável da sua apresentação aparecerá aqui assim que for gerada.</p>
                                     
                                     <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg text-left">
                                         <h4 className="font-bold text-blue-800">Dicas para o Melhor Resultado:</h4>
@@ -524,7 +524,8 @@
         }
 
         const container = document.getElementById('root');
-        ReactDOM.render(<App />, container);
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
 
     </script>
 </body>
