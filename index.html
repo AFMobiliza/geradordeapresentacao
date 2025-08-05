@@ -34,6 +34,19 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        /* Estilos para o loader de IA */
+        .loader-sm {
+            width: 16px;
+            height: 16px;
+            border: 2px solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -48,13 +61,13 @@
         // --- Ícones como Componentes SVG ---
         const Icon = ({ path, className }) => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>{path}</svg>);
         const Bars3Icon = (props) => <Icon {...props} path={<path fillRule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />} />;
-        const DocumentPlusIcon = (props) => <Icon {...props} path={<path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clipRule="evenodd" />} />;
         const ArrowDownTrayIcon = (props) => <Icon {...props} path={<path fillRule="evenodd" d="M12 2.25a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V3a.75.75 0 0 1 .75-.75Zm-9 13.5a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />} />;
         const SparklesIcon = (props) => <Icon {...props} path={<path fillRule="evenodd" d="M9.344 3.071a.75.75 0 0 1 1.06 0l2.5 2.5a.75.75 0 0 1 0 1.06l-2.5 2.5a.75.75 0 0 1-1.06-1.06L10.94 6l-1.595-1.595a.75.75 0 0 1 0-1.06l-.001-.001ZM12 1.5a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V2.25A.75.75 0 0 1 12 1.5ZM16.06 4.939a.75.75 0 0 1 0 1.06l-1.75 1.75a.75.75 0 0 1-1.06-1.06l1.75-1.75a.75.75 0 0 1 1.06 0ZM21.75 12a.75.75 0 0 1-.75.75h-2.25a.75.75 0 0 1 0-1.5h2.25a.75.75 0 0 1 .75.75ZM16.06 17.96a.75.75 0 0 1 1.06 0l1.75 1.75a.75.75 0 1 1-1.06 1.06l-1.75-1.75a.75.75 0 0 1 0-1.06ZM12 22.5a.75.75 0 0 1-.75-.75v-2.25a.75.75 0 0 1 1.5 0v2.25a.75.75 0 0 1-.75.75ZM4.939 16.06a.75.75 0 0 1 1.06 0l1.75 1.75a.75.75 0 0 1-1.06 1.06l-1.75-1.75a.75.75 0 0 1 0-1.06ZM2.25 12c0 .414.336.75.75.75h2.25a.75.75 0 0 0 0-1.5H3a.75.75 0 0 0-.75.75ZM4.939 7.939a.75.75 0 0 1-1.06 0L2.129 6.189a.75.75 0 1 1 1.06-1.06l1.75 1.75a.75.75 0 0 1 0 1.06ZM12 12.75a.75.75 0 0 0-1.06-.02l-1.313-1.313a.75.75 0 0 1 1.06-1.06l1.313 1.313a.75.75 0 0 0 .02 1.06Zm-4.243-4.242a.75.75 0 0 0-1.06-1.06l-1.313 1.313a.75.75 0 0 0 1.06 1.06l1.313-1.313Z" clipRule="evenodd" />} />;
         const XMarkIcon = (props) => <Icon {...props} path={<path fillRule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />} />;
         const TrashIcon = (props) => <Icon {...props} path={<path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1-3.878.512.75.75 0 1 1-.256-1.478l3.585-.616a.75.75 0 0 1 .848.848Zm-4.219 1.585a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-1.5 0V6.813a.75.75 0 0 1 .75-.75Zm2.25 0a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-1.5 0V6.813a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />} />;
         const PhotoIcon = (props) => <Icon {...props} path={<path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06l4.22-4.22a.75.75 0 0 1 1.06 0l3.53 3.53a.75.75 0 0 0 1.06 0l2.12-2.12a.75.75 0 0 1 1.06 0l3.18 3.18V6H3v10.06ZM12 9a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" clipRule="evenodd" />} />;
         const ArrowUpOnSquareIcon = (props) => <Icon {...props} path={<path fillRule="evenodd" d="M9 3.75a.75.75 0 0 1 .75.75v6.586l1.97-1.97a.75.75 0 0 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L5.22 9.126a.75.75 0 0 1 1.06-1.06l1.97 1.97V4.5a.75.75 0 0 1 .75-.75Zm2.25 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V12.75a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />} />;
+        const PencilSquareIcon = (props) => <Icon {...props} path={<path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />} />;
 
         // Dados dos ODS (apenas texto)
         const odsData = [
@@ -88,6 +101,8 @@
             const [website, setWebsite] = useState('');
             const [socialMedia, setSocialMedia] = useState('');
             const [selectedODS, setSelectedODS] = useState([]);
+            const [themeDescription, setThemeDescription] = useState('');
+            const [refiningState, setRefiningState] = useState({}); // { [slideIndex]: 'tone' | true }
 
             useEffect(() => {
                 localStorage.setItem('projectText', projectText);
@@ -154,6 +169,41 @@
                 }
             };
             
+            const callGeminiAPI = async (prompt, isJson = false) => {
+                let promptParts = [{ text: prompt }];
+                
+                const payload = {
+                    contents: [{ role: "user", parts: promptParts }],
+                };
+
+                if (isJson) {
+                    payload.generationConfig = {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: {
+                                "theme": { type: "OBJECT", properties: { "primaryColor": { "type": "STRING" }, "textColor": { "type": "STRING" }, "backgroundColor": { "type": "STRING" } }, required: ["primaryColor", "textColor", "backgroundColor"] },
+                                "slides": { type: "ARRAY", items: { type: "OBJECT", properties: { "title": { "type": "STRING" }, "content": { "type": "STRING" }, "image_prompt": { "type": "STRING" }, "notes": {"type": "STRING"} }, required: ["title", "content"] } }
+                            },
+                            required: ["theme", "slides"]
+                        }
+                    };
+                }
+                
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`);
+                
+                const result = await response.json();
+                const text = result.candidates[0]?.content?.parts?.[0]?.text;
+                if (!text) throw new Error('A resposta da IA está vazia.');
+                
+                return text;
+            };
+
+
             const generatePreview = async () => {
                 setIsLoading(true);
                 setErrorMessage('');
@@ -167,14 +217,16 @@
                 }
 
                 try {
-                    let promptParts = [];
-                    let basePrompt = `Você é um especialista em criar propostas comerciais para ONGs. Sua tarefa é transformar o texto e as imagens de um projeto em uma apresentação estratégica e persuasiva. **Seja conciso e direto. Use frases curtas e bullet points.**`;
+                    let basePrompt = `Você é um especialista em criar propostas comerciais para ONGs. Sua tarefa é transformar o texto de um projeto em uma apresentação estratégica e persuasiva. **Seja conciso e direto. Use frases curtas e bullet points.**`;
                     
-                    if (logo) {
-                        basePrompt += `\n\nAnalise a logomarca fornecida para entender o tom e a paleta de cores. Baseado nela, sugira um tema de design.`;
+                    if (logo || themeDescription) {
+                        basePrompt += `\n\nAnalise a identidade visual.`;
+                        if (themeDescription) basePrompt += ` O usuário descreveu o estilo como: "${themeDescription}".`;
+                        if (logo) basePrompt += ` A logomarca também foi fornecida para referência de cores.`;
+                        basePrompt += ` Baseado nisso, sugira um tema de design.`;
                     }
                     
-                    basePrompt += `\n\nSua resposta deve ser um objeto JSON. A estrutura deve ser: { "theme": { "primaryColor": "#XXXXXX", "textColor": "#XXXXXX", "backgroundColor": "#XXXXXX" }, "slides": [ { "title": "...", "content": "...", "image_prompt": "..." } ] }.`;
+                    basePrompt += `\n\nSua resposta deve ser um objeto JSON. A estrutura deve ser: { "theme": { "primaryColor": "#XXXXXX", "textColor": "#XXXXXX", "backgroundColor": "#XXXXXX" }, "slides": [ { "title": "...", "content": "...", "image_prompt": "...", "notes": "..." } ] }. O campo "notes" deve conter sugestões de roteiro para o apresentador em bullet points.`;
                     
                     let imagePromptInstruction = (includeAiImages && userImages.length === 0)
                         ? `Para cada slide, inclua um campo "image_prompt" no JSON com uma descrição em inglês para uma IA gerar uma imagem simbólica e limpa (estilo: 'digital art, clean, minimalist').`
@@ -207,20 +259,16 @@
                     
                     slideCounter++;
                     const finalPromptPart = `\n${slideCounter}. **Chamada para Ação:** Título 'Junte-se a Nós'. O conteúdo deve ser um convite para parceria e incluir as informações de contato se fornecidas.\n${contactInfoPrompt}\n\n**Informações do Projeto:**\n\`\`\`${projectText}\`\`\`\n\n**Informações do Patrocinador para personalização:**\n\`\`\`${sponsorInfo}\`\`\``;
-                    const fullPrompt = basePrompt + optionalSlidesPrompt + finalPromptPart;
+                    
+                    let fullPrompt = basePrompt + optionalSlidesPrompt + finalPromptPart;
 
-                    promptParts.push({ text: fullPrompt });
+                    let promptParts = [{ text: fullPrompt }];
                     if (logo) {
                         const mimeType = logo.type;
                         const base64Data = logo.data.substring(logo.data.indexOf(",") + 1);
                         promptParts.push({ inlineData: { mimeType: mimeType, data: base64Data } });
                     }
-                    userImages.forEach(img => {
-                        const mimeType = img.type;
-                        const base64Data = img.data.substring(img.data.indexOf(",") + 1);
-                        promptParts.push({ inlineData: { mimeType: mimeType, data: base64Data } });
-                    });
-
+                    
                     const payload = {
                         contents: [{ role: "user", parts: promptParts }],
                         generationConfig: {
@@ -229,7 +277,7 @@
                                 type: "OBJECT",
                                 properties: {
                                     "theme": { type: "OBJECT", properties: { "primaryColor": { "type": "STRING" }, "textColor": { "type": "STRING" }, "backgroundColor": { "type": "STRING" } }, required: ["primaryColor", "textColor", "backgroundColor"] },
-                                    "slides": { type: "ARRAY", items: { type: "OBJECT", properties: { "title": { "type": "STRING" }, "content": { "type": "STRING" }, "image_prompt": { "type": "STRING" } }, required: ["title", "content"] } }
+                                    "slides": { type: "ARRAY", items: { type: "OBJECT", properties: { "title": { "type": "STRING" }, "content": { "type": "STRING" }, "image_prompt": { "type": "STRING" }, "notes": {"type": "STRING"} }, required: ["title", "content"] } }
                                 },
                                 required: ["theme", "slides"]
                             }
@@ -270,9 +318,37 @@
 
                 } catch (error) {
                     console.error('Erro geral na geração da apresentação:', error);
-                    setErrorMessage('Ocorreu um erro ao gerar a prévia.');
+                    setErrorMessage(`Ocorreu um erro: ${error.message}`);
                 } finally {
                     setIsLoading(false);
+                }
+            };
+            
+            const refineSlideContent = async (index, tone) => {
+                setRefiningState(prev => ({ ...prev, [index]: tone }));
+                try {
+                    const slide = slides[index];
+                    const prompt = `Reescreva o seguinte conteúdo de slide para ter um tom mais **${tone}**. Retorne apenas o texto reescrito, sem o título ou formatação adicional.\n\nConteúdo original:\n"${slide.content}"`;
+                    const newContent = await callGeminiAPI(prompt);
+                    handleSlideChange(index, 'content', newContent);
+                } catch (error) {
+                    setErrorMessage(`Erro ao refinar: ${error.message}`);
+                } finally {
+                    setRefiningState(prev => ({ ...prev, [index]: false }));
+                }
+            };
+
+            const generatePresenterNotes = async (index) => {
+                setRefiningState(prev => ({ ...prev, [`notes-${index}`]: true }));
+                try {
+                    const slide = slides[index];
+                    const prompt = `Crie notas de apresentador (em português) para um slide com o título "${slide.title}" e conteúdo "${slide.content}". As notas devem ser curtas, em bullet points, e fornecer dicas e contexto para o apresentador. Retorne apenas as notas.`;
+                    const newNotes = await callGeminiAPI(prompt);
+                    handleSlideChange(index, 'notes', newNotes);
+                } catch (error) {
+                    setErrorMessage(`Erro ao gerar notas: ${error.message}`);
+                } finally {
+                    setRefiningState(prev => ({ ...prev, [`notes-${index}`]: false }));
                 }
             };
 
@@ -293,22 +369,20 @@
                 slides.forEach((slide, index) => {
                     const newSlide = pptx.addSlide();
                     newSlide.background = { color: THEME.background };
+                    if (slide.notes) {
+                        newSlide.addNotes(slide.notes);
+                    }
                     
-                    // CORREÇÃO: Ajuste no posicionamento e dimensionamento da logomarca
                     if (logo && index !== 0) {
                         newSlide.addImage({
-                            data: logo.data,
-                            x: 9.0,      // Posição X (canto direito)
-                            y: 0.15,     // Posição Y (topo)
-                            w: 0.8,      // Largura máxima da caixa da logo
-                            h: 0.4,      // Altura máxima da caixa da logo
-                            sizing: { type: 'contain' } // 'contain' ajusta a imagem para caber na caixa mantendo a proporção
+                            data: logo.data, x: 9.0, y: 0.15, w: 0.8, h: 0.4,
+                            sizing: { type: 'contain' }
                         });
                     }
 
                     if (index === 0) {
                         if (slide.imageData) {
-                            newSlide.addImage({ data: slide.imageData, x: 0, y: 0, w: '100%', h: '100%', sizing: { type: 'cover', w: '100%', h: '100%' } });
+                            newSlide.addImage({ data: slide.imageData, x: 0, y: 0, w: '100%', h: '100%', sizing: { type: 'cover' } });
                             newSlide.addShape(pptx.shapes.RECTANGLE, { x: 0, y: 0, w: '100%', h: '100%', fill: { color: '000000', transparency: 50 } });
                         }
                         newSlide.addText(slide.title, { x: 0.5, y: 2, w: '90%', h: 1, align: 'center', fontSize: 48, fontFace: 'Inter', color: 'FFFFFF', bold: true });
@@ -329,25 +403,22 @@
                     
                     if (layoutType === 1) {
                         const textX = 0.5, imageX = 5.5;
-                        if (slide.imageData) newSlide.addImage({ data: slide.imageData, x: imageX, y: 1.25, w: 4, h: 3.125, sizing: { type: 'cover', w: 4, h: 3.125 } });
+                        if (slide.imageData) newSlide.addImage({ data: slide.imageData, x: imageX, y: 1.25, w: 4, h: 3.125, sizing: { type: 'cover' } });
                         newSlide.addText(slide.title, { x: textX, y: 1.5, w: 4.5, h: 1, fontSize: 36, fontFace: 'Inter', color: THEME.accent, bold: true });
                         const contentPoints = slide.content.split('\n').filter(line => line.trim() !== '');
-                        const formattedContent = contentPoints.map(point => ({ text: point }));
-                        newSlide.addText(formattedContent, { x: textX, y: 2.5, w: 4.5, h: 2.5, fontSize: 18, fontFace: 'Inter', color: THEME.text, bullet: { type: 'dot', color: THEME.accent } });
+                        newSlide.addText(contentPoints.join('\n'), { x: textX, y: 2.5, w: 4.5, h: 2.5, fontSize: 18, fontFace: 'Inter', color: THEME.text, bullet: { type: 'dot', color: THEME.accent } });
                     } else if (layoutType === 2) {
                         const textX = 5.5, imageX = 0.5;
-                        if (slide.imageData) newSlide.addImage({ data: slide.imageData, x: imageX, y: 1.25, w: 4, h: 3.125, sizing: { type: 'cover', w: 4, h: 3.125 } });
+                        if (slide.imageData) newSlide.addImage({ data: slide.imageData, x: imageX, y: 1.25, w: 4, h: 3.125, sizing: { type: 'cover' } });
                         newSlide.addText(slide.title, { x: textX, y: 1.5, w: 4, h: 1, fontSize: 36, fontFace: 'Inter', color: THEME.accent, bold: true });
                         const contentPoints = slide.content.split('\n').filter(line => line.trim() !== '');
-                        const formattedContent = contentPoints.map(point => ({ text: point }));
-                        newSlide.addText(formattedContent, { x: textX, y: 2.5, w: 4, h: 2.5, fontSize: 18, fontFace: 'Inter', color: THEME.text, bullet: { type: 'dot', color: THEME.accent } });
+                        newSlide.addText(contentPoints.join('\n'), { x: textX, y: 2.5, w: 4, h: 2.5, fontSize: 18, fontFace: 'Inter', color: THEME.text, bullet: { type: 'dot', color: THEME.accent } });
                     } else {
                         newSlide.addShape(pptx.shapes.RECTANGLE, { x: 0, y: 0, w: '100%', h: 1.25, fill: { color: THEME.accent } });
                         newSlide.addText(slide.title, { x: 0.5, y: 0, w: '90%', h: 1.25, align: 'left', valign: 'middle', fontSize: 32, fontFace: 'Inter', color: 'FFFFFF', bold: true });
-                        if (slide.imageData) newSlide.addImage({ data: slide.imageData, x: 5.5, y: 1.75, w: 4, h: 3, sizing: { type: 'cover', w: 4, h: 3 } });
+                        if (slide.imageData) newSlide.addImage({ data: slide.imageData, x: 5.5, y: 1.75, w: 4, h: 3, sizing: { type: 'cover' } });
                         const contentPoints = slide.content.split('\n').filter(line => line.trim() !== '');
-                        const formattedContent = contentPoints.map(point => ({ text: point }));
-                        newSlide.addText(formattedContent, { x: 0.5, y: 1.75, w: 4.5, h: 3, fontSize: 18, fontFace: 'Inter', color: THEME.text, bullet: { type: 'dot', color: THEME.accent } });
+                        newSlide.addText(contentPoints.join('\n'), { x: 0.5, y: 1.75, w: 4.5, h: 3, fontSize: 18, fontFace: 'Inter', color: THEME.text, bullet: { type: 'dot', color: THEME.accent } });
                     }
                 });
                 
@@ -356,22 +427,21 @@
             
             const handleSlideChange = (index, field, value) => {
                 const updatedSlides = [...slides];
-                updatedSlides[index][field] = value;
-                setSlides(updatedSlides);
+                if(updatedSlides[index]) {
+                    updatedSlides[index][field] = value;
+                    setSlides(updatedSlides);
+                }
             };
             
             const clearAll = () => {
-                setProjectText('');
-                setSlides([]);
-                setErrorMessage('');
-                setUserImages([]);
-                setLogo(null);
+                setProjectText(''); setSlides([]); setErrorMessage('');
+                setUserImages([]); setLogo(null);
             }
 
             return (
                 <div className="min-h-screen text-gray-800 flex flex-col lg:flex-row">
                     <aside className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out z-50 w-80 bg-white border-r border-gray-200 shadow-xl lg:shadow-none p-6 flex flex-col`}>
-                        <div className="flex-1 overflow-y-auto">
+                        <div className="flex-1 overflow-y-auto pr-2">
                             <div className="flex items-center justify-between lg:mb-8 mb-4">
                                 <div className="flex items-center space-x-3"><SparklesIcon className="h-8 w-8 text-indigo-600" /><h1 className="text-xl font-bold tracking-tight text-gray-900">Genie Presentations</h1></div>
                                 <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-gray-500 hover:text-gray-900"><XMarkIcon className="h-6 w-6" /></button>
@@ -385,6 +455,7 @@
                                 
                                 <div className="border-t border-gray-200 pt-4">
                                     <h3 className="text-sm font-semibold text-gray-600 mb-3">Identidade Visual</h3>
+                                    <input type="text" value={themeDescription} onChange={(e) => setThemeDescription(e.target.value)} placeholder="Descreva o estilo (ex: moderno, corporativo)" className="w-full p-2 text-sm border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 mb-2" />
                                     <label htmlFor="logo-upload" className="w-full cursor-pointer bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200 border border-dashed border-gray-300">
                                         <ArrowUpOnSquareIcon className="h-5 w-5" /><span>Upload da Logomarca</span>
                                     </label>
@@ -417,12 +488,7 @@
                                     <div className="space-y-2 max-h-32 overflow-y-auto">
                                         {odsData.map(ods => (
                                             <label key={ods.id} className="flex items-center space-x-2 text-sm text-gray-700">
-                                                <input 
-                                                    type="checkbox" 
-                                                    checked={selectedODS.includes(ods.id)} 
-                                                    onChange={() => toggleODS(ods.id)}
-                                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                />
+                                                <input type="checkbox" checked={selectedODS.includes(ods.id)} onChange={() => toggleODS(ods.id)} className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
                                                 <span>{ods.name}</span>
                                             </label>
                                         ))}
@@ -474,24 +540,42 @@
                                 <p className="text-gray-600 mb-6">Revise e edite o conteúdo abaixo. Suas alterações serão salvas no arquivo PPTX final.</p>
                                 <div className="space-y-6">
                                     {slides.map((slide, index) => (
-                                        <div key={index} className="bg-white p-6 rounded-lg shadow-md border border-gray-200 slide-fade-in flex flex-col md:flex-row gap-6" style={{ animationDelay: `${index * 100}ms`}}>
-                                            <div className="flex-1">
-                                                <label className="block text-sm font-bold text-indigo-700 mb-2">SLIDE {index + 1}: TÍTULO</label>
-                                                <input type="text" value={slide.title} onChange={(e) => handleSlideChange(index, 'title', e.target.value)} className="w-full p-2 border border-gray-300 rounded-md text-lg font-semibold text-gray-800 focus:ring-2 focus:ring-indigo-500" />
-                                                <label className="block text-sm font-bold text-indigo-700 mt-4 mb-2">CONTEÚDO</label>
-                                                <textarea value={slide.content} onChange={(e) => handleSlideChange(index, 'content', e.target.value)} className="w-full p-2 border border-gray-300 rounded-md text-gray-700 h-32 focus:ring-2 focus:ring-indigo-500" />
+                                        <div key={index} className="bg-white p-6 rounded-lg shadow-md border border-gray-200 slide-fade-in flex flex-col gap-6" style={{ animationDelay: `${index * 100}ms`}}>
+                                            <div className="flex flex-col md:flex-row gap-6">
+                                                <div className="flex-1">
+                                                    <label className="block text-sm font-bold text-indigo-700 mb-2">SLIDE {index + 1}: TÍTULO</label>
+                                                    <input type="text" value={slide.title} onChange={(e) => handleSlideChange(index, 'title', e.target.value)} className="w-full p-2 border border-gray-300 rounded-md text-lg font-semibold text-gray-800 focus:ring-2 focus:ring-indigo-500" />
+                                                    <label className="block text-sm font-bold text-indigo-700 mt-4 mb-2">CONTEÚDO</label>
+                                                    <textarea value={slide.content} onChange={(e) => handleSlideChange(index, 'content', e.target.value)} className="w-full p-2 border border-gray-300 rounded-md text-gray-700 h-32 focus:ring-2 focus:ring-indigo-500" />
+                                                </div>
+                                                <div className="w-full md:w-1/3">
+                                                    <label className="block text-sm font-bold text-indigo-700 mb-2">IMAGEM</label>
+                                                    <div className="w-full h-40 bg-gray-200 rounded-md flex items-center justify-center">
+                                                        {slide.imageData ? (
+                                                            <img src={slide.imageData} alt={`Imagem para o slide ${slide.title}`} className="object-cover w-full h-full rounded-md" />
+                                                        ) : (
+                                                            <div className="flex flex-col items-center text-gray-500">
+                                                                <PhotoIcon className="h-8 w-8 mb-2 animate-pulse" />
+                                                                <span className="text-xs">Gerando imagem...</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="w-full md:w-1/3">
-                                                <label className="block text-sm font-bold text-indigo-700 mb-2">IMAGEM</label>
-                                                <div className="w-full h-40 bg-gray-200 rounded-md flex items-center justify-center">
-                                                    {slide.imageData ? (
-                                                        <img src={slide.imageData} alt={`Imagem para o slide ${slide.title}`} className="object-cover w-full h-full rounded-md" />
-                                                    ) : (
-                                                        <div className="flex flex-col items-center text-gray-500">
-                                                            <PhotoIcon className="h-8 w-8 mb-2 animate-pulse" />
-                                                            <span className="text-xs">Gerando imagem...</span>
-                                                        </div>
-                                                    )}
+                                            <div className="border-t border-gray-200 pt-4">
+                                                <label className="block text-sm font-bold text-indigo-700 mb-2">NOTAS DO APRESENTADOR</label>
+                                                <textarea value={slide.notes || ''} onChange={(e) => handleSlideChange(index, 'notes', e.target.value)} className="w-full p-2 border border-gray-300 rounded-md text-gray-600 text-sm h-24 focus:ring-2 focus:ring-indigo-500" placeholder="Suas notas para a apresentação..."/>
+                                            </div>
+                                            <div className="border-t border-gray-200 pt-4 flex items-center justify-between gap-2 flex-wrap">
+                                                <span className="text-sm font-semibold text-gray-700">✨ Assistente IA:</span>
+                                                <div className="flex items-center gap-2">
+                                                    <button onClick={() => refineSlideContent(index, 'conciso')} disabled={refiningState[index]} className="px-3 py-1 text-xs font-semibold text-purple-700 bg-purple-100 rounded-full hover:bg-purple-200 disabled:opacity-50">Conciso</button>
+                                                    <button onClick={() => refineSlideContent(index, 'formal')} disabled={refiningState[index]} className="px-3 py-1 text-xs font-semibold text-blue-700 bg-blue-100 rounded-full hover:bg-blue-200 disabled:opacity-50">Formal</button>
+                                                    <button onClick={() => refineSlideContent(index, 'inspirador')} disabled={refiningState[index]} className="px-3 py-1 text-xs font-semibold text-amber-700 bg-amber-100 rounded-full hover:bg-amber-200 disabled:opacity-50">Inspirador</button>
+                                                    <button onClick={() => generatePresenterNotes(index)} disabled={refiningState[`notes-${index}`]} className="px-3 py-1 text-xs font-semibold text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 disabled:opacity-50 flex items-center gap-1">
+                                                        {refiningState[`notes-${index}`] ? <span className="loader-sm"></span> : <PencilSquareIcon className="h-4 w-4" />}
+                                                        Notas
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
